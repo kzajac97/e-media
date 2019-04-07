@@ -20,7 +20,7 @@ namespace Cryptography
     using numeric_t = int; //alias for numeric type used in reading wave file
     using key_t = unsigned long long int;
     using uint1024_t =  boost::multiprecision::uint1024_t;
-    using uint65536_t = number<cpp_int_backend<65536, 65536,unsigned_magnitude, unchecked, void> >;
+    using uint65536_t = number<cpp_int_backend<65536,65536,unsigned_magnitude, unchecked, void> >;
 
     struct RsaKeys
     {
@@ -58,6 +58,8 @@ namespace Cryptography
     std::vector<numeric_t> rsaEncrypt(std::vector<numeric_t> data, RsaKeys keys);
     // decrypts numeric data in a vector using passed rsakeys
     std::vector<numeric_t> rsaDecrypt(std::vector<numeric_t> data, RsaKeys keys);
+    void addEncryptedKey(std::vector<numeric_t> & decrypted_data, const numeric_t number ,const unsigned int index, const RsaKeys keys);
+    std::vector<numeric_t> rsaDecryptAsync(std::vector<numeric_t> data, RsaKeys keys);
 }
 
 #endif

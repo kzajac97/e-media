@@ -10,7 +10,7 @@ int main(void)
     auto keys = Cryptography::RsaKeys(53,59);
     keys.PrintKeys();
     auto encrypted = Cryptography::rsaEncrypt(vec,keys);
-    auto decrypted = Cryptography::rsaDecrypt(encrypted,keys);
+    auto decrypted = Cryptography::rsaDecryptAsync(encrypted,keys);
 
     std::cout << "Message:\n";
     for(auto x : vec) { std::cout << x << " "; }

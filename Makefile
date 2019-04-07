@@ -11,7 +11,7 @@ main.o: main.cpp
 	g++ -c ${CXXFLAGS} ${BOOSTFLAGS} main.cpp
 
 rsa.o: rsa.cpp rsa.hpp
-	g++ -c ${CXXFLAGS} ${BOOSTFLAGS} rsa.cpp
+	g++ -c ${CXXFLAGS} ${BOOSTFLAGS} rsa.cpp -lpthread
 
 clean:
 	rm -f *.o *.exe
