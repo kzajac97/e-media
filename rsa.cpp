@@ -52,22 +52,50 @@ key_t Cryptography::greatestCommonDenominator(key_t arg_1, key_t arg_2)
     } 
 }
 
-std::vector<numeric_t> Cryptography::encrypt(std::vector<numeric_t> data, RsaKeys keys)
+uint65536_t Cryptography::raiseLargeNumber(numeric_t number, key_t exponent)
+{
+    uint65536_t large_number = boost::numeric_cast<uint65536_t>(number);
+    
+    for(unsigned int i=1; i < exponent; i++)
+        { large_number *= number; }
+
+    return large_number; 
+}
+    
+std::vector<numeric_t> Cryptography::xorEncrypt(std::vector<numeric_t> data, int key)
+{
+    for(auto & element : data)
+        { element ^= key; }
+
+    return data;
+}
+
+std::vector<numeric_t> Cryptography::rsaEncrypt(std::vector<numeric_t> data, RsaKeys keys)
 {
     std::vector<numeric_t> encrypted_data;
 
-    for(auto element : data)
-        { encrypted_data.push_back( (numeric_t) std::pow(element,keys.exponent) % keys.public_key ); }
+    for(auto element : data)    
+    { 
+        uint1024_t encrypted_number = boost::numeric_cast<uint1024_t>( std::pow(element,keys.exponent) );
+
+        encrypted_number %= keys.public_key;   
+        encrypted_data.push_back( (numeric_t) encrypted_number ); 
+    }
 
     return encrypted_data;
 }
 
-std::vector<numeric_t> Cryptography::decrypt(std::vector<numeric_t> data, RsaKeys keys)
+std::vector<numeric_t> Cryptography::rsaDecrypt(std::vector<numeric_t> data, RsaKeys keys)
 {
     std::vector<numeric_t> decrypted_data;
     
     for(auto element : data)
-        { decrypted_data.push_back( (numeric_t) std::pow(element,keys.private_key) % keys.public_key ); }
+    { 
+        uint65536_t encrypted_number = boost::numeric_cast<uint65536_t>( raiseLargeNumber(element,keys.private_key) );
+        
+        encrypted_number %= keys.public_key;
+        decrypted_data.push_back( (numeric_t) encrypted_number ); 
+    }
 
     return decrypted_data;
 }

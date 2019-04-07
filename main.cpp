@@ -5,14 +5,20 @@
 
 int main(void)
 {
-    std::vector<int> vec = {1,2,3,4,5,6,7,8,9,10};
+    std::vector<int> vec = {101,223,32,44,534,66,77,88,95,103};
 
-    auto keys = Cryptography::RsaKeys(3,7);
-    auto encrypted = Cryptography::encrypt(vec,keys);
-    auto decrypted = Cryptography::decrypt(encrypted,keys);
+    auto keys = Cryptography::RsaKeys(53,59);
+    keys.PrintKeys();
+    auto encrypted = Cryptography::rsaEncrypt(vec,keys);
+    auto decrypted = Cryptography::rsaDecrypt(encrypted,keys);
 
+    std::cout << "Message:\n";
+    for(auto x : vec) { std::cout << x << " "; }
+    std::cout << "\n";
+    std::cout << "Encrypted:\n";
     for(auto x : encrypted) { std::cout << x << " "; }
     std::cout << "\n";
+    std::cout << "Decrypted:\n";
     for(auto x : decrypted) { std::cout << x << " "; }
     std::cout << "\n";
 }

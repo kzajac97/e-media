@@ -8,10 +8,10 @@ emedia.exe: main.o rsa.o
 	g++ -o emedia.exe main.o rsa.o
 
 main.o: main.cpp 	
-	g++ -c ${CXXFLAGS} main.cpp
+	g++ -c ${CXXFLAGS} ${BOOSTFLAGS} main.cpp
 
 rsa.o: rsa.cpp rsa.hpp
-	g++ -c ${CXXFLAGS} rsa.cpp
+	g++ -c ${CXXFLAGS} ${BOOSTFLAGS} rsa.cpp
 
 clean:
 	rm -f *.o *.exe

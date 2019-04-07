@@ -59,6 +59,8 @@
         "future": "cpp",
         "queue": "cpp",
         "stack": "cpp",
-        "xthread": "cpp"
+        "xthread": "cpp",
+        "cinttypes": "cpp",
+        "execution": "cpp"
     }
 }
