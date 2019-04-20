@@ -64,7 +64,22 @@ uint65536_t Cryptography::raiseLargeNumber(numeric_t number, key_t exponent)
 
     return large_number; 
 }
+
+numeric_t Cryptography::modularExponent(numeric_t number, key_t exponent, key_t modulus)
+{
+    if(modulus == 1)
+        { return 0; }
     
+    else
+    {
+        numeric_t result = 1;
+        for(unsigned int i=0; i < exponent; i++)
+            { result = (result*number) % modulus; }
+
+        return result;
+    }
+}   
+
 std::vector<numeric_t> Cryptography::xorEncrypt(std::vector<numeric_t> data, int key)
 {
     for(auto & element : data)
@@ -94,21 +109,23 @@ std::vector<numeric_t> Cryptography::rsaDecrypt(std::vector<numeric_t> data, Rsa
     
     for(auto element : data)
     { 
-        uint65536_t encrypted_number = boost::numeric_cast<uint65536_t>( raiseLargeNumber(element,keys.private_key) );
+        //uint65536_t encrypted_number = boost::numeric_cast<uint65536_t>( raiseLargeNumber(element,keys.private_key) );
         
-        encrypted_number %= keys.public_key;
-        decrypted_data.push_back( (numeric_t) encrypted_number ); 
+        //encrypted_number %= keys.public_key;
+        numeric_t encrypted_number = modularExponent(element,keys.private_key,keys.public_key);
+        decrypted_data.push_back(encrypted_number ); 
     }
 
     return decrypted_data;
 }
 
-void Cryptography::addEncryptedKey(std::vector<numeric_t> & decrypted_data, const numeric_t number ,const unsigned int index, const RsaKeys keys)
+void Cryptography::addDecryptedKey(std::vector<numeric_t> & decrypted_data, const numeric_t number ,const unsigned int index, const RsaKeys keys)
 {
-    uint65536_t encrypted_number = boost::numeric_cast<uint65536_t>( raiseLargeNumber(number,keys.private_key) );
+    //uint65536_t encrypted_number = boost::numeric_cast<uint65536_t>( raiseLargeNumber(number,keys.private_key) );
         
-    encrypted_number %= keys.public_key;
-    decrypted_data[index] = (numeric_t) encrypted_number; 
+    //encrypted_number %= keys.public_key;
+    numeric_t encrypted_number = modularExponent(number,keys.private_key,keys.public_key);
+    decrypted_data[index] = encrypted_number; 
 }
 
 std::vector<numeric_t> Cryptography::rsaDecryptAsync(std::vector<numeric_t> data, RsaKeys keys)
@@ -119,7 +136,7 @@ std::vector<numeric_t> Cryptography::rsaDecryptAsync(std::vector<numeric_t> data
 
     for(unsigned int i=0; i < data.size(); ++i)
     {
-        std::thread t(addEncryptedKey,std::ref(decrypted_data),data[i],i,keys);
+        std::thread t(addDecryptedKey,std::ref(decrypted_data),data[i],i,keys);
         threads.push_back(std::move(t));
     }
 
