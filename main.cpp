@@ -91,7 +91,6 @@ DataType* modifyWAVData(DataType* Data,WAVHeader& wav, int sampels_amount)
 {
     if(wav.numChannels==2)
     {
-        std::cout<<"2 cahnels"<<std::endl;
         for (int i = 0; i<(sampels_amount/4); i++)
         {
             if(i%2==0)
@@ -102,7 +101,6 @@ DataType* modifyWAVData(DataType* Data,WAVHeader& wav, int sampels_amount)
     }
     else
     {
-        std::cout<<"one chanes"<<std::endl;
         for (int i = 0; i<sampels_amount/4; i++)
         {
             Data[i]=1000;
@@ -145,10 +143,6 @@ std::cout<<"First "<<sampels_amount<<" sampels :"<<std::endl;
 
 
 
-
-
-
-
 int main(void)
 {
 //__________________WAV Files________________________________________
@@ -188,7 +182,7 @@ int main(void)
     int data_size=getSubchunk2Size(header);       
     DataType* WAVData = new DataType[data_size]();
     WAVData = readData(file_open,header);
-    printExampleData(WAVData,150);
+    printExampleData(WAVData,150);   // 150 - amount of sampels to print
 
     int data_size2=getSubchunk2Size(header);       
     WAVData = modifyWAVData(WAVData,header ,data_size2);
