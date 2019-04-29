@@ -55,30 +55,14 @@ key_t Cryptography::greatestCommonDenominator(key_t arg_1, key_t arg_2)
     } 
 }
 
-uint65536_t Cryptography::raiseLargeNumber(numeric_t number, key_t exponent)
+key_t Cryptography::raiseLargeNumber(numeric_t number, key_t exponent)
 {
-    uint65536_t large_number = boost::numeric_cast<uint65536_t>(number);
+    key_t large_number = boost::numeric_cast<key_t>(number);
     
     for(unsigned int i=1; i < exponent; i++)
         { large_number *= number; }
 
     return large_number; 
-}
-
-bool Cryptography::testPrime(key_t number)
-{
-    // even number are not prime
-    if(number % 2 == 0)
-        { return false; }
-
-    // test every odd number up to sqrt(N), itereate by 2 elements
-    for(unsigned int i=2; i < std::sqrt(number); i+=2)
-    {
-        if(number % i == 0)
-            { return false; }
-    }
-
-    return true;
 }
 
 numeric_t Cryptography::modularExponent(numeric_t number, key_t exponent, key_t modulus)
@@ -88,11 +72,11 @@ numeric_t Cryptography::modularExponent(numeric_t number, key_t exponent, key_t 
     
     else
     {
-        numeric_t result = 1;
+        key_t result = 1;
         for(unsigned int i=0; i < exponent; i++)
             { result = (result*number) % modulus; }
 
-        return result;
+        return boost::numeric_cast<numeric_t>(result);
     }
 }   
 
@@ -110,7 +94,7 @@ std::vector<numeric_t> Cryptography::rsaEncrypt(std::vector<numeric_t> data, Rsa
 
     for(auto element : data)    
     { 
-        uint1024_t encrypted_number = boost::numeric_cast<uint1024_t>( std::pow(element,keys.exponent) );
+        key_t encrypted_number = boost::numeric_cast<key_t>( raiseLargeNumber(element,keys.exponent) );
 
         encrypted_number %= keys.public_key;   
         encrypted_data.push_back( (numeric_t) encrypted_number ); 
@@ -124,9 +108,9 @@ std::vector<numeric_t> Cryptography::rsaDecrypt(std::vector<numeric_t> data, Rsa
     std::vector<numeric_t> decrypted_data;
     
     for(auto element : data)
-    { 
+    {
         numeric_t encrypted_number = modularExponent(element,keys.private_key,keys.public_key);
-        decrypted_data.push_back(encrypted_number ); 
+        decrypted_data.push_back(encrypted_number); 
     }
 
     return decrypted_data;

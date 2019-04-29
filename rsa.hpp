@@ -18,9 +18,10 @@ using namespace boost::multiprecision;
 namespace Cryptography
 {  
     using numeric_t = short int; //alias for numeric type used in reading wave file
-    //using key_t = number<cpp_int_backend<4096,4096,unsigned_magnitude, unchecked, void> >;
-    using key_t = long long int;
+    using key_t = number<cpp_int_backend<4096,4096,unsigned_magnitude, unchecked, void> >;
+    //using key_t = long long int;
     using uint1024_t =  boost::multiprecision::uint1024_t;
+    using uint4096_t = number<cpp_int_backend<4096,4096,unsigned_magnitude, unchecked, void> >;
     using uint65536_t = number<cpp_int_backend<65536,65536,unsigned_magnitude, unchecked, void> >;
     
     struct RsaKeys
@@ -52,11 +53,7 @@ namespace Cryptography
     // returns two large prime numbers
     std::tuple<key_t,key_t> getPrimeNumbers(void);
     //
-    uint65536_t raiseLargeNumber(numeric_t number, key_t exponent);
-    key_t generatePrime();
-    std::tuple<key_t,key_t> generateRelativePrimes();
-    bool testPrime(key_t number);
-    //
+    key_t raiseLargeNumber(numeric_t number, key_t exponent);
     numeric_t modularExponent(numeric_t number, key_t exponent, key_t modulus);
     std::vector<numeric_t> xorEncrypt(std::vector<numeric_t> data, int key);
     // encrypts numeric data in a vector using passed rsakeys
