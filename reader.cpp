@@ -18,25 +18,25 @@ int getSubchunk2Size(WAVHeader& Header)
     return Header.subchunk2Size;
 }
 
- DataType* readData(std::ifstream& file,WAVHeader& Header)
+ data_t* readData(std::ifstream& file,WAVHeader& Header)
 {
 
     int data_size=Header.subchunk2Size;
     char* buffer = new char[data_size];
     file.read(buffer,data_size);
-    DataType* tmp = reinterpret_cast<DataType*>(buffer);
+    data_t* tmp = reinterpret_cast<data_t*>(buffer);
     file.close();
     return tmp;
 }
  /*with some bug
-std::vector<DataType> readData(std::ifstream& file,WAVHeader& Header)
+std::vector<data_t> readData(std::ifstream& file,WAVHeader& Header)
 {
 
     int data_size=Header.subchunk2Size;
     char* buffer = new char[data_size];
     file.read(buffer,data_size);
-    DataType* tmp = reinterpret_cast<DataType*>(buffer);
-    std::vector<DataType> DATA;
+    data_t* tmp = reinterpret_cast<data_t*>(buffer);
+    std::vector<data_t> DATA;
 
     for(int i=0; i < data_size; i++)
     {
@@ -53,7 +53,7 @@ void writeHeader(std::ofstream& file,WAVHeader& wav)
     file.write(buffer, sizeof(WAVHeader));
 }
 
-void writeData(std::ofstream& file,WAVHeader& Header,DataType* WAVData)
+void writeData(std::ofstream& file,WAVHeader& Header,data_t* WAVData)
 {
     int data_size=Header.subchunk2Size;
     char* buffer = reinterpret_cast<char*>(WAVData);
@@ -61,7 +61,7 @@ void writeData(std::ofstream& file,WAVHeader& Header,DataType* WAVData)
 }
 
 //function modifi first half part of wav file 
-DataType* modifyWAVData(DataType* Data,WAVHeader& wav, int sampels_amount)
+data_t* modifyWAVData(data_t* Data,WAVHeader& wav, int sampels_amount)
 {
     if(wav.numChannels==2)
     {
@@ -106,7 +106,7 @@ void printHeader(const WAVHeader& Header)
     cout<<"\t\t\tSubchunk2Size     "<<Header.subchunk2Size<<endl;   
 }
 
-void printExampleData(DataType* Data, const int sampels_amount)
+void printExampleData(data_t* Data, const int sampels_amount)
 {
 std::cout<<"First "<<sampels_amount<<" sampels :"<<std::endl;
     for(int i=0; i <sampels_amount; i++)

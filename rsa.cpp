@@ -19,6 +19,20 @@ RsaKeys::RsaKeys(key_t p_init, key_t q_init)
     this->private_key = (1 + (2 * (p_value-1) * (q_value-1)) )/(this->exponent);
 }
 
+void RsaKeys::generateKeys(key_t p_init, key_t q_init)
+{
+    // save prime numbers in structure
+    this->p_value = p_init;
+    this->q_value = q_init;
+    // save public key as product of two primes
+    this->public_key = p_value * q_value;
+    // get exponent as smallest co prime 
+    // exponent is a part of public key 
+    this->exponent = getCoPrime((p_value-1)*(q_value-1));
+    // get private key from formula 
+    this->private_key = (1 + (2 * (p_value-1) * (q_value-1)) )/(this->exponent);
+}
+
 void RsaKeys::PrintKeys(void) 
 {
     std::cout << "Prime numbers: " << this->p_value << " " << this->q_value << "\n";
@@ -94,10 +108,8 @@ std::vector<numeric_t> Cryptography::rsaEncrypt(std::vector<numeric_t> data, Rsa
 
     for(auto element : data)    
     { 
-        key_t encrypted_number = boost::numeric_cast<key_t>( raiseLargeNumber(element,keys.exponent) );
-
-        encrypted_number %= keys.public_key;   
-        encrypted_data.push_back( (numeric_t) encrypted_number ); 
+        numeric_t encrypted_number = modularExponent(element,keys.exponent,keys.public_key);
+        encrypted_data.push_back(encrypted_number); 
     }
 
     return encrypted_data;

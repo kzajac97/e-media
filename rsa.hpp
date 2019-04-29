@@ -17,7 +17,7 @@ using namespace boost::multiprecision;
 
 namespace Cryptography
 {  
-    using numeric_t = short int; //alias for numeric type used in reading wave file
+    using numeric_t = int16_t; //alias for numeric type used in reading wave file
     using key_t = number<cpp_int_backend<4096,4096,unsigned_magnitude, unchecked, void> >;
     //using key_t = long long int;
     using uint1024_t =  boost::multiprecision::uint1024_t;
@@ -41,6 +41,7 @@ namespace Cryptography
         ~RsaKeys() {};
 
         void PrintKeys(void);
+        void generateKeys(key_t p_init, key_t q_init);
     };
 
     // Euclidean algorithm
