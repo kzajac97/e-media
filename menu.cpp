@@ -143,9 +143,11 @@ void Menu(void)
             break;
             case 'T':
             {
-                std::vector<data_t> data = {1,2,3,4,5,56,6,7,73,27,3};
+                std::vector<data_t> data;
+                data.resize(20);
+                std::iota(data.begin(),data.end(),1);
     
-                keys.generateKeys(173,71);
+                keys.generateKeys(131,107);
                 keys.PrintKeys();
                 auto encrypted = Cryptography::rsaEncrypt(data,keys);
                 auto decrypted = Cryptography::rsaDecryptAsync(encrypted,keys);
@@ -159,6 +161,8 @@ void Menu(void)
                 for(auto x : decrypted) { std::cout << x << " "; }
                 std::cout << "\n";
             }
+            break;
+            case 'Q':
             break;
             default:
                 std::cout << "No such option\n";
