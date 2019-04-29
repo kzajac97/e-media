@@ -3,7 +3,6 @@
 
 #pragma once
 
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -30,8 +29,7 @@ struct WAVHeader
     uint16_t block_align;
     uint16_t bits_per_sample;
     unsigned char subchunk2ID[4];       //data
-    uint32_t subchunk2Size;             //wav data size -
-                            // NumSamples * NumChannels * BitsPerSample/8
+    uint32_t subchunk2Size;             //wav data size - NumSamples * NumChannels * BitsPerSample/8
 };
 
 void readHeader(std::ifstream& file,WAVHeader& Header);
@@ -43,9 +41,5 @@ void writeData(std::ofstream& file,WAVHeader& Header,DataType* WAVData);
 DataType* modifyWAVData(DataType* Data,WAVHeader& wav, int sampels_amount);
 void printHeader(const WAVHeader& Header);
 void printExampleData(DataType* Data, const int sampels_amount);
-
-
-
-
 
 #endif

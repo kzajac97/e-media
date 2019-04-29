@@ -65,6 +65,22 @@ uint65536_t Cryptography::raiseLargeNumber(numeric_t number, key_t exponent)
     return large_number; 
 }
 
+bool Cryptography::testPrime(key_t number)
+{
+    // even number are not prime
+    if(number % 2 == 0)
+        { return false; }
+
+    // test every odd number up to sqrt(N), itereate by 2 elements
+    for(unsigned int i=2; i < std::sqrt(number); i+=2)
+    {
+        if(number % i == 0)
+            { return false; }
+    }
+
+    return true;
+}
+
 numeric_t Cryptography::modularExponent(numeric_t number, key_t exponent, key_t modulus)
 {
     if(modulus == 1)
@@ -109,9 +125,6 @@ std::vector<numeric_t> Cryptography::rsaDecrypt(std::vector<numeric_t> data, Rsa
     
     for(auto element : data)
     { 
-        //uint65536_t encrypted_number = boost::numeric_cast<uint65536_t>( raiseLargeNumber(element,keys.private_key) );
-        
-        //encrypted_number %= keys.public_key;
         numeric_t encrypted_number = modularExponent(element,keys.private_key,keys.public_key);
         decrypted_data.push_back(encrypted_number ); 
     }
@@ -119,11 +132,8 @@ std::vector<numeric_t> Cryptography::rsaDecrypt(std::vector<numeric_t> data, Rsa
     return decrypted_data;
 }
 
-void Cryptography::addDecryptedKey(std::vector<numeric_t> & decrypted_data, const numeric_t number ,const unsigned int index, const RsaKeys keys)
+void Cryptography::addDecryptedKey(std::vector<numeric_t> & decrypted_data, const numeric_t number, const unsigned int index, const RsaKeys keys)
 {
-    //uint65536_t encrypted_number = boost::numeric_cast<uint65536_t>( raiseLargeNumber(number,keys.private_key) );
-        
-    //encrypted_number %= keys.public_key;
     numeric_t encrypted_number = modularExponent(number,keys.private_key,keys.public_key);
     decrypted_data[index] = encrypted_number; 
 }
