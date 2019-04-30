@@ -29,8 +29,8 @@ void Menu(void)
     char option;
     WAVHeader header;
     data_t* WAVData;
-    std::string filename_open = "timer.wav";
-    std::string filename_save = "encrypted.wav";
+    std::string filename_open = "Data/timer.wav";
+    std::string filename_save = "Data/encrypted.wav";
     std::ifstream file_open(filename_open.c_str(), std::ifstream::binary);
     std::ofstream file_save(filename_save.c_str(), std::ofstream::binary);
     Cryptography::RsaKeys keys(53,59);
