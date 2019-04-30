@@ -29,8 +29,8 @@ void Menu(void)
     char option;
     WAVHeader header;
     data_t* WAVData;
-    std::string filename_open = "Data/timer.wav";
-    std::string filename_save = "Data/encrypted.wav";
+    std::string filename_open = "Audio/";
+    std::string filename_save = "Audio/";
     std::ifstream file_open(filename_open.c_str(), std::ifstream::binary);
     std::ofstream file_save(filename_save.c_str(), std::ofstream::binary);
     Cryptography::RsaKeys keys(53,59);
@@ -45,10 +45,16 @@ void Menu(void)
         {
             case 'L':
             {
+                std::string input;
+                std::cout << "File name: \n";
+                std::cin >> input;
+                filename_open += input;
+                std::ifstream file_open(filename_open.c_str(), std::ifstream::binary);
+
                 if (!file_open)
                     { std::cerr << "ERR: Cannot find the file" << std::endl; }
                 
-                if(remove("encryptedfile.wav") != 0) { perror("Error deleting old WAV file"); }
+                if(remove("Audio/encryptedfile.wav") != 0) { perror("Error deleting old WAV file"); }
                 else { puts( "Old WAV file successfully deleted"); }
                 std::cout << "Start reading WAV file... " << std::endl;
                 
@@ -57,11 +63,19 @@ void Menu(void)
 
                 data_size = getSubchunk2Size(header);       
                 WAVData = new data_t[data_size]();
-                WAVData = readData(file_open,header); 
+                WAVData = readData(file_open,header);
+
+                filename_open.clear();
+                filename_open = "Audio/"; 
             }
             break;
             case 'S':
             {
+                std::string input;
+                std::cout << "File name: \n";
+                std::cin >> input;
+                filename_save += input;
+                std::ofstream file_save(filename_save.c_str(), std::ofstream::binary);
                 //Save data to wav file
                 if (!file_save)
                     { std::cerr << "ERR: Cannot find the file\n"; }
@@ -72,6 +86,9 @@ void Menu(void)
                 std::cout << "Start saving WAV file... \n";
                 writeHeader(file_save,header);
                 writeData(file_save,header,WAVData);
+
+                filename_save.clear();
+                filename_save = "Audio/";
             }
             break;
             case 'P':
