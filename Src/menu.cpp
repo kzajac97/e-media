@@ -9,6 +9,9 @@
 #include <random>
 #include <algorithm>
 
+#include <boost/multiprecision/cpp_int.hpp>
+#include <boost/numeric/conversion/cast.hpp>
+
 #include "menu.hpp"
 
 void displayManu(void)
@@ -18,6 +21,7 @@ void displayManu(void)
     std::cout << "S-> Save .wav file\n";
     std::cout << "P-> Print first N samples\n";
     std::cout << "X-> Encrypt file with XOR\n";
+    std::cout << "Y-> Decrypt file with XOR\n";
     std::cout << "E-> Encrypt file with RSA\n";
     std::cout << "D-> Decrypt file with RSA\n";
     std::cout << "T-> Test RSA with numeric data\n";
@@ -39,6 +43,7 @@ void Menu(void)
 
     do
     {
+        std::system("clear");
         displayManu();
         std::cin >> option;
         switch(option)
@@ -102,7 +107,7 @@ void Menu(void)
             {
                 std::vector<data_t> vec;
                 vec.resize(data_size);
-                int xor_key;
+                boost::multiprecision::uint1024_t xor_key;
 
                 for(int i=0; i < data_size; i++)
                     { vec[i] = *(WAVData + i); }
@@ -110,6 +115,11 @@ void Menu(void)
                 std::cout << "XOR key:\n";
                 std::cin >> xor_key;
                 vec = Cryptography::xorEncrypt(vec,xor_key);
+
+                std::ofstream xor_file;
+                xor_file.open("Keys/xor_key.txt");
+                xor_file << xor_key;
+                xor_file.close();
 
                 WAVData = new data_t[data_size](); // make sure memory is allocated
                 
@@ -119,6 +129,11 @@ void Menu(void)
                 vec.clear(); // clear vector
                 vec.shrink_to_fit(); // release memory
             }
+            case 'Y':
+            {
+                
+            }
+            break;
             break;
             case 'E':
             {

@@ -87,17 +87,24 @@ numeric_t Cryptography::modularExponent(numeric_t number, key_t exponent, key_t 
     else
     {
         key_t result = 1;
+        // apply modulo in every iteration to avoid overflow
         for(unsigned int i=0; i < exponent; i++)
             { result = (result*number) % modulus; }
-
-        return boost::numeric_cast<numeric_t>(result);
+        
+        return boost::numeric_cast<numeric_t>(result); // use casting for numeric stablility
     }
 }   
 
-std::vector<numeric_t> Cryptography::xorEncrypt(std::vector<numeric_t> data, int key)
+std::vector<numeric_t> Cryptography::xorEncrypt(std::vector<numeric_t> data, uint1024_t key)
 {
-    for(auto & element : data)
-        { element ^= key; }
+    std::vector<uint8_t> keys(128,0); // split 1024 bit key into series of 8 bit numbers 
+    for(unsigned int i=0; i < keys.size(); ++i)
+        { keys[i] = boost::numeric_cast<uint8_t>(key >> (8*i)); } // use bit shift 
+
+    // apply each 8 bit key to each value 
+    // when data is longer than keys, repeat from beginnig
+    for(unsigned int j=0; j < data.size(); ++j)
+        { data[j] ^= keys[j % keys.size()]; } 
 
     return data;
 }

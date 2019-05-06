@@ -56,7 +56,7 @@ namespace Cryptography
     //
     key_t raiseLargeNumber(numeric_t number, key_t exponent);
     numeric_t modularExponent(numeric_t number, key_t exponent, key_t modulus);
-    std::vector<numeric_t> xorEncrypt(std::vector<numeric_t> data, int key);
+    std::vector<numeric_t> xorEncrypt(std::vector<numeric_t> data, uint1024_t key);
     // encrypts numeric data in a vector using passed rsakeys
     std::vector<numeric_t> rsaEncrypt(std::vector<numeric_t> data, RsaKeys keys);
     // decrypts numeric data in a vector using passed rsakeys
