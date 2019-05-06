@@ -18,7 +18,7 @@ using namespace boost::multiprecision;
 
 int main(void)
 {
-    Menu();
+    //Menu();
 
     // std::vector<int16_t> data = {1,2,3,4,5,4,5,5,4,3,4,4,4};
     // uint1024_t key = 2363637318288490413;

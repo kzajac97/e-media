@@ -63,6 +63,7 @@ namespace Cryptography
     std::vector<numeric_t> rsaDecrypt(std::vector<numeric_t> data, RsaKeys keys);
     void addDecryptedKey(std::vector<numeric_t> & decrypted_data, const numeric_t number, const unsigned int index, const RsaKeys keys);
     std::vector<numeric_t> rsaDecryptAsync(std::vector<numeric_t> data, RsaKeys keys);
+    uint1024_t GenerateXorKey(void);
 }
 
 #endif

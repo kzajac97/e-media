@@ -24,6 +24,8 @@ void displayManu(void)
     std::cout << "Y-> Decrypt file with XOR\n";
     std::cout << "E-> Encrypt file with RSA\n";
     std::cout << "D-> Decrypt file with RSA\n";
+    std::cout << "G-> Generate RSA keys\n";
+    std::cout << "K-> Generate XOR keys\n";
     std::cout << "T-> Test RSA with numeric data\n";
     std::cout << "Q-> Quit\n";
 }
@@ -116,8 +118,7 @@ void Menu(void)
                 std::cin >> xor_key;
                 vec = Cryptography::xorEncrypt(vec,xor_key);
 
-                std::ofstream xor_file;
-                xor_file.open("Keys/xor_key.txt");
+                std::ofstream xor_file("Keys/xor_key.txt");
                 xor_file << xor_key;
                 xor_file.close();
 
@@ -131,9 +132,37 @@ void Menu(void)
             }
             case 'Y':
             {
+                std::vector<data_t> vec;
+                vec.resize(data_size);
+                boost::multiprecision::uint1024_t xor_key;
+
+                for(int i=0; i < data_size; i++)
+                    { vec[i] = *(WAVData + i); }
                 
+                std::ifstream xor_file("Keys/xor_key.txt");
+                xor_file >> xor_key;
+                xor_file.close();
+                
+                vec = Cryptography::xorEncrypt(vec,xor_key);
+
+                WAVData = new data_t[data_size](); // make sure memory is allocated
+               
+                for(int j=0; j < data_size; j++)
+                    { *(WAVData + j) = vec[j]; }
+
+                vec.clear(); // clear vector
+                vec.shrink_to_fit(); // release memory
             }
             break;
+            case 'K':
+            {
+                boost::multiprecision::uint1024_t xor_key;               
+                xor_key = Cryptography::GenerateXorKey();
+
+                std::ofstream xor_file("Keys/xor_key.txt");
+                xor_file << xor_key;
+                xor_file.close();
+            }
             break;
             case 'E':
             {
