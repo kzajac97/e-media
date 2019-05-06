@@ -12,6 +12,7 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/numeric/conversion/cast.hpp>
+#include <boost/integer.hpp>
 
 using namespace boost::multiprecision;
 

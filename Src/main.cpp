@@ -20,7 +20,7 @@ int main(void)
 {
     //Menu();
 
-    // std::vector<int16_t> data = {1,2,3,4,5,4,5,5,4,3,4,4,4};
+    // std::vector<int16_t> data = {1,2,3,4,5,4,5,5,4,3,4,4,2,34,4,14,1,3,2,3,3,2,141,5,15};
     // uint1024_t key = 2363637318288490413;
     // std::cout << "xor key: " << key << "\n";
     // auto encrypted = Cryptography::xorEncrypt(data,key);
@@ -41,4 +41,7 @@ int main(void)
     //     { std::cout << x << " "; }
     // std::cout << "\n";
     // return 0;
+
+    Cryptography::RsaKeys keys(104729,108203);
+    keys.PrintKeys();
 }

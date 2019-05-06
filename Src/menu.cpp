@@ -43,9 +43,10 @@ void Menu(void)
     unsigned int nSamples;
     int data_size;
 
+    std::system("clear");
+        
     do
     {
-        std::system("clear");
         displayManu();
         std::cin >> option;
         switch(option)
@@ -116,11 +117,12 @@ void Menu(void)
 
                 std::cout << "XOR key:\n";
                 std::cin >> xor_key;
+
                 vec = Cryptography::xorEncrypt(vec,xor_key);
 
-                std::ofstream xor_file("Keys/xor_key.txt");
-                xor_file << xor_key;
-                xor_file.close();
+                // std::ofstream xor_file("Keys/xor_key.txt");
+                // xor_file << xor_key;
+                // xor_file.close();
 
                 WAVData = new data_t[data_size](); // make sure memory is allocated
                 
@@ -130,6 +132,7 @@ void Menu(void)
                 vec.clear(); // clear vector
                 vec.shrink_to_fit(); // release memory
             }
+            break;
             case 'Y':
             {
                 std::vector<data_t> vec;
@@ -142,6 +145,8 @@ void Menu(void)
                 std::ifstream xor_file("Keys/xor_key.txt");
                 xor_file >> xor_key;
                 xor_file.close();
+
+                std::cout << xor_key << "\n";
                 
                 vec = Cryptography::xorEncrypt(vec,xor_key);
 
