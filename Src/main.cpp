@@ -20,9 +20,9 @@ int main(void)
 {
     //Menu();
 
-    Cryptography::RsaKeys<unsigned int> keys(53,59);
+    Cryptography::RsaKeys<long long int> keys(53,59);
     keys.PrintKeys();
-    std::vector<int16_t> data = {1,2,3,4,5,4,5,5,4,3,4,4,2,34,4,14,1,3,2,3,3,2,11,5,15};
+    std::vector<int16_t> data = {1,2,3,3,441,4,1};
     // uint1024_t key = 2363637318288490413;
     // std::cout << "xor key: " << key << "\n";
     auto encrypted = Cryptography::rsaEncrypt(data,keys);

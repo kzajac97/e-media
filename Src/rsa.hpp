@@ -168,19 +168,19 @@ namespace Cryptography
     template <typename key_t>
     std::vector<numeric_t> rsaDecrypt(std::vector<numeric_t> data, RsaKeys<key_t> keys)
     {
-        std::vector<key_t> decrypted_data;
-        std::vector<numeric_t> return_data;
+        std::vector<numeric_t> decrypted_data;
+        std::vector<key_t> encrypted_data;
     
-        for(auto element : data)
+        for(unsigned int i=0; i < data.size(); i += sizeof(encrypted_data[0])/sizeof(data[0]) )
+            { encrypted_data.push_back( boost::numeric_cast<key_t> (data[i] >> (16*i)) ); }
+
+        for(auto element : encrypted_data)
         {
-            key_t decrypted_number = modularExponent(element,keys.private_key,keys.public_key);
+            numeric_t decrypted_number = boost::numeric_cast<numeric_t>(modularExponent(element,keys.private_key,keys.public_key));
             decrypted_data.push_back(decrypted_number); 
         }
 
-        for(unsigned int i=0; i < decrypted_data.size(); ++i)
-            { return_data.push_back( boost::numeric_cast<numeric_t>(decrypted_data[i] >> sizeof(decrypted_data[i]) )); }
-
-        return return_data;
+        return decrypted_data;
     }
 
     template <typename key_t>
