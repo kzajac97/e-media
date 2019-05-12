@@ -23,7 +23,7 @@ using namespace boost::multiprecision;
 
 namespace Cryptography
 {  
-    using numeric_t = int16_t; //alias for numeric type used in reading wave file
+    using numeric_t = uint16_t; //alias for numeric type used in reading wave file
     using uint1024_t =  boost::multiprecision::uint1024_t;
     
     // Euclidean algorithm
@@ -148,7 +148,7 @@ namespace Cryptography
     {
         std::vector<key_t> encrypted_data;
         std::vector<numeric_t> return_data;
-
+        
         for(auto element : data)    
         { 
             key_t encrypted_number = modularExponent(element,keys.exponent,keys.public_key);
@@ -157,8 +157,8 @@ namespace Cryptography
 
         for(auto element : encrypted_data)
         {
-            for(unsigned int i=0; i < sizeof(element)/2; ++i)
-                { return_data.push_back( boost::numeric_cast<numeric_t>(element >> (16*i) )); }
+            for(unsigned int i=0; i < sizeof(key_t)/sizeof(numeric_t); ++i)
+                { return_data.push_back( (element >> ( 8 * sizeof(numeric_t) * i)) ); }
         }
 
         return return_data;
@@ -190,27 +190,27 @@ namespace Cryptography
         decrypted_data[index] = encrypted_number; 
     }
 
-    template <typename key_t>
-    std::vector<numeric_t> rsaDecryptAsync(std::vector<numeric_t> data, RsaKeys<key_t> keys)
-    {
-        std::vector<numeric_t> decrypted_data;
+    // template <typename key_t>
+    // std::vector<numeric_t> rsaDecryptAsync(std::vector<numeric_t> data, RsaKeys<key_t> keys)
+    // {
+    //     std::vector<numeric_t> decrypted_data;
     
-        decrypted_data.resize(data.size());
-        std::vector<std::thread> threads;
+    //     decrypted_data.resize(data.size());
+    //     std::vector<std::thread> threads;
 
-        for(unsigned int i=0; i < data.size(); ++i)
-        {
-            std::thread t(addDecryptedKey,std::ref(decrypted_data),data[i],i,keys);
-            threads.push_back(std::move(t));
-        }
+    //     for(unsigned int i=0; i < data.size(); ++i)
+    //     {
+    //         std::thread t(addDecryptedKey,std::ref(decrypted_data),data[i],i,keys);
+    //         threads.push_back(std::move(t));
+    //     }
 
-        for(unsigned int j=0; j < threads.size(); ++j)
-            { threads[j].join(); }
+    //     for(unsigned int j=0; j < threads.size(); ++j)
+    //         { threads[j].join(); }
 
-        threads.clear();
+    //     threads.clear();
 
-        return decrypted_data;
-    }
+    //     return decrypted_data;
+    // }
     
     // XOR encryption funcitons
     std::vector<numeric_t> xorEncrypt(std::vector<numeric_t> data, uint1024_t key);

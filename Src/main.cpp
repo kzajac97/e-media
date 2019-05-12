@@ -20,13 +20,14 @@ int main(void)
 {
     //Menu();
 
-    Cryptography::RsaKeys<long long int> keys(53,59);
+    Cryptography::RsaKeys<unsigned long int> keys(383,397);
     keys.PrintKeys();
-    std::vector<int16_t> data = {1,2,3,3,441,4,1};
+    std::vector<uint16_t> data = {353, 299, 358, 272, 382, 256, 386, 208, 384, 144, 356, 89, 336, 26, 342, 33, 35, 75, 298, 88};
+    //std::vector<int16_t> data = {32639, 32639, 32639, 32639, 32639};
     // uint1024_t key = 2363637318288490413;
     // std::cout << "xor key: " << key << "\n";
     auto encrypted = Cryptography::rsaEncrypt(data,keys);
-    auto decrypted = Cryptography::rsaDecrypt(encrypted,keys);
+    //auto decrypted = Cryptography::rsaDecrypt(encrypted,keys);
 
     std::cout << "DATA: \n";
     for(auto x : data)
@@ -38,9 +39,9 @@ int main(void)
         { std::cout << x << " "; }
     std::cout << "\n";
 
-    std::cout << "DECRYPTED: \n";
-    for(auto x : decrypted)
-        { std::cout << x << " "; }
-    std::cout << "\n";
-    return 0;
+    // std::cout << "DECRYPTED: \n";
+    // for(auto x : decrypted)
+    //     { std::cout << x << " "; }
+    // std::cout << "\n";
+    // return 0;
 }

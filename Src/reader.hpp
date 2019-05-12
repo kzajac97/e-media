@@ -12,7 +12,7 @@
 #include <utility>
 #include <type_traits>
 
-using data_t = int16_t;
+using data_t = uint16_t;
 
 // more about wave struct : http://soundfile.sapp.org/doc/WaveFormat/
 struct WAVHeader 

@@ -2,7 +2,7 @@ from tqdm import tqdm
 
 def mod_exp(number, e, modulus):
     result = 1
-    for i in tqdm(range(e)):
+    for i in range(e):
         result = result*number % modulus 
 
     return result
@@ -28,22 +28,23 @@ def get_co_prime(phi):
     return e
 
 if __name__ == "__main__":
-    p = 53
-    q = 59
+    p = 383
+    q = 397
     public = p * q
     e = get_co_prime( (p-1)*(q-1) )
     private = int( (1 + (2 * (p -1)*(q - 1)) / e) )
 
-    message = [1,2,3,4,5,4,5,5,4,3,4,4,2,34,4,14,1,3,2,3,3,2,141,5,15]
+    message = [32639, 32639, 32639, 32639, 32639]
+    message = [353, 299, 358, 272, 382, 256, 386, 208, 384, 144, 356, 89, 336, 26, 342, 33, 35, 75, 298, 88]
 
     encoded = []
     decoded = []
 
-    for m in message:
+    for m in tqdm(message):
         encoded.append(mod_exp(m,e,public))
 
-    for enc in encoded:
-        decoded.append( mod_exp(enc,private,public) )
+    for enc in tqdm(encoded):
+        decoded.append(mod_exp(enc,private,public))
 
     print("Public",public)
     print("Private",private)
