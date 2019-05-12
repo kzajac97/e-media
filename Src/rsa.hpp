@@ -155,6 +155,11 @@ namespace Cryptography
             encrypted_data.push_back(encrypted_number); 
         }
 
+        std::cout << "ENCRPYTED : \n";
+        for(auto x : encrypted_data)
+        { std::cout << x << " "; }
+        std::cout << "\n";
+
         for(auto element : encrypted_data)
         {
             for(unsigned int i=0; i < sizeof(key_t)/sizeof(numeric_t); ++i)
@@ -169,10 +174,25 @@ namespace Cryptography
     std::vector<numeric_t> rsaDecrypt(std::vector<numeric_t> data, RsaKeys<key_t> keys)
     {
         std::vector<numeric_t> decrypted_data;
-        std::vector<key_t> encrypted_data;
+        auto size_ratio = sizeof(key_t)/sizeof(numeric_t);
+        std::vector<key_t> encrypted_data(data.size() * sizeof(numeric_t)/sizeof(key_t),0);
+        
+        for(unsigned int i=0; i < encrypted_data.size(); ++i)
+        {
+            for(unsigned int j=0; j < size_ratio; ++j)
+            {
+                //if(j == 0) { encrypted_data[i] += data[size_ratio*i + j]; }
+                //else { encrypted_data[i] += (key_t) data[size_ratio*i + j] * raiseLargeNumber(2,8*size_ratio*j ); }
+
+                encrypted_data[i] += j == 0 ? 
+                     data[size_ratio*i + j] : (key_t) data[size_ratio*i + j] * raiseLargeNumber(2,8*size_ratio*j);
+            }
+        }
     
-        for(unsigned int i=0; i < data.size(); i += sizeof(encrypted_data[0])/sizeof(data[0]) )
-            { encrypted_data.push_back( boost::numeric_cast<key_t> (data[i] >> (16*i)) ); }
+        std::cout << "ENCRPYTED KEYS: \n";
+        for(auto x : encrypted_data)
+        { std::cout << x << " "; }
+        std::cout << "\n";
 
         for(auto element : encrypted_data)
         {
