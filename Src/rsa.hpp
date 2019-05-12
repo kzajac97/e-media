@@ -25,6 +25,8 @@ namespace Cryptography
 {  
     using numeric_t = uint16_t; //alias for numeric type used in reading wave file
     using uint1024_t =  boost::multiprecision::uint1024_t;
+    using uint4096_t = number<cpp_int_backend<65536,65536,unsigned_magnitude, unchecked, void> >;
+    using uint_max_t = number<cpp_int_backend<65536,65536,unsigned_magnitude, unchecked, void> >;
     
     // Euclidean algorithm
     // <returns> Greatest common denominator of two ints
@@ -138,7 +140,24 @@ namespace Cryptography
             for(unsigned int i=0; i < exponent; i++)
                 { result = (result*number) % modulus; }
         
-            return boost::numeric_cast<key_t>(result); // use casting for numeric stablility
+            return boost::numeric_cast<key_t> (result); // use casting for numeric stablility
+        }
+    }
+
+    template <typename key_t>
+    numeric_t decryptingExponent(key_t number, key_t exponent, key_t modulus)
+    {
+        if(modulus == 1)
+            { return 0; }
+    
+        else
+        {
+            uint4096_t result = 1;
+            // apply modulo in every iteration to avoid overflow
+            for(unsigned int i=0; i < exponent; i++)
+                { result = (result*number) % modulus; }
+        
+            return (numeric_t) result; // use casting for numeric stablility
         }
     }
 
@@ -155,11 +174,6 @@ namespace Cryptography
             encrypted_data.push_back(encrypted_number); 
         }
 
-        std::cout << "ENCRPYTED : \n";
-        for(auto x : encrypted_data)
-        { std::cout << x << " "; }
-        std::cout << "\n";
-
         for(auto element : encrypted_data)
         {
             for(unsigned int i=0; i < sizeof(key_t)/sizeof(numeric_t); ++i)
@@ -173,33 +187,25 @@ namespace Cryptography
     template <typename key_t>
     std::vector<numeric_t> rsaDecrypt(std::vector<numeric_t> data, RsaKeys<key_t> keys)
     {
-        std::vector<numeric_t> decrypted_data;
+        std::vector<numeric_t> decrypted_data; 
         auto size_ratio = sizeof(key_t)/sizeof(numeric_t);
         std::vector<key_t> encrypted_data(data.size() * sizeof(numeric_t)/sizeof(key_t),0);
         
         for(unsigned int i=0; i < encrypted_data.size(); ++i)
         {
             for(unsigned int j=0; j < size_ratio; ++j)
-            {
-                //if(j == 0) { encrypted_data[i] += data[size_ratio*i + j]; }
-                //else { encrypted_data[i] += (key_t) data[size_ratio*i + j] * raiseLargeNumber(2,8*size_ratio*j ); }
-
+            {                
                 encrypted_data[i] += j == 0 ? 
-                     data[size_ratio*i + j] : (key_t) data[size_ratio*i + j] * raiseLargeNumber(2,8*size_ratio*j);
+                    data[size_ratio*i + j] : (key_t) data[size_ratio*i + j] * raiseLargeNumber(2,8*size_ratio*j);
             }
         }
     
-        std::cout << "ENCRPYTED KEYS: \n";
-        for(auto x : encrypted_data)
-        { std::cout << x << " "; }
-        std::cout << "\n";
-
         for(auto element : encrypted_data)
         {
-            numeric_t decrypted_number = boost::numeric_cast<numeric_t>(modularExponent(element,keys.private_key,keys.public_key));
+            numeric_t decrypted_number = decryptingExponent(element,keys.private_key,keys.public_key);
             decrypted_data.push_back(decrypted_number); 
         }
-
+    
         return decrypted_data;
     }
 

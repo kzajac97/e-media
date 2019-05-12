@@ -22,7 +22,7 @@ int main(void)
 
     Cryptography::RsaKeys<uint32_t> keys(383,397);
     keys.PrintKeys();
-    std::vector<uint16_t> data = {353, 299, 358, 272, 382, 256, 386, 208, 384, 144, 356, 89, 336, 26, 342, 33, 35, 75, 298, 88};
+    std::vector<uint16_t> data = {53, 29, 38, 27, 38, 25, 36, 28, 84, 14, 56, 89, 36, 26, 32, 33, 35, 75, 98, 88};
     //std::vector<int16_t> data = {32639, 32639, 32639, 32639, 32639};
     // uint1024_t key = 2363637318288490413;
     // std::cout << "xor key: " << key << "\n";
