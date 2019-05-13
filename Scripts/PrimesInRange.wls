@@ -1,3 +1,3 @@
 p = Prime~Array~PrimePi@# &;
-primes = p @ 65536;
+primes = p @ (2^32);
 Print[primes]

@@ -236,7 +236,6 @@ namespace Cryptography
                 { return true; }
         }
 
-        // Return composite 
         return false;
     }
 
