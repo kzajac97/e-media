@@ -24,6 +24,7 @@ using namespace boost::multiprecision;
 namespace Cryptography
 {  
     using numeric_t = uint16_t; //alias for numeric type used in reading wave file
+    using uint128_t = boost::multiprecision::uint128_t;
     using uint1024_t =  boost::multiprecision::uint1024_t;
     using uint4096_t = number<cpp_int_backend<65536,65536,unsigned_magnitude, unchecked, void> >;
     using uint_max_t = number<cpp_int_backend<65536,65536,unsigned_magnitude, unchecked, void> >;
@@ -177,7 +178,10 @@ namespace Cryptography
         for(auto element : encrypted_data)
         {
             for(unsigned int i=0; i < sizeof(key_t)/sizeof(numeric_t); ++i)
-                { return_data.push_back( (element >> ( 8 * sizeof(numeric_t) * i)) ); }
+            { 
+                numeric_t value = (element >> ( 8 * sizeof(numeric_t) * i));
+                return_data.push_back(value); 
+            }
         }
 
         return return_data;
