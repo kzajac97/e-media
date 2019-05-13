@@ -14,6 +14,7 @@
 #include <random>
 #include <numeric>
 #include <algorithm>
+#include <cstdlib>
 
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -128,7 +129,7 @@ namespace Cryptography
         return large_number; 
     }
 
-    template <typename key_t>
+    template <typename key_t, typename numeric_t>
     key_t modularExponent(numeric_t number, key_t exponent, key_t modulus)
     {
         if(modulus == 1)
@@ -179,7 +180,7 @@ namespace Cryptography
         {
             for(unsigned int i=0; i < sizeof(key_t)/sizeof(numeric_t); ++i)
             { 
-                numeric_t value = (element >> ( 8 * sizeof(numeric_t) * i));
+                numeric_t value = (element >> (8 * sizeof(numeric_t) * i));
                 return_data.push_back(value); 
             }
         }
@@ -213,35 +214,46 @@ namespace Cryptography
         return decrypted_data;
     }
 
+    // Miller-Rabin test
+    // <returns> True if number is probably prime
     template <typename key_t>
-    void addDecryptedKey(std::vector<numeric_t> & decrypted_data, const numeric_t number, const unsigned int index, const RsaKeys<key_t> keys)
+    bool millerRabinTest(key_t number, key_t rounds)
     {
-        numeric_t encrypted_number = modularExponent(number,keys.private_key,keys.public_key);
-        decrypted_data[index] = encrypted_number; 
+        key_t random = 2 + rand() % (number - 4); 
+        key_t x = modularExponent(random,rounds,number); 
+    
+        if (x == 1  || x == number - 1) 
+            { return true; }
+    
+        while (rounds != number-1) 
+        { 
+            x = (x * x) % number; 
+            rounds *= 2; 
+    
+            if (x == 1)
+                { return false; }
+            if (x == number-1)    
+                { return true; }
+        }
+
+        // Return composite 
+        return false;
     }
 
-    // template <typename key_t>
-    // std::vector<numeric_t> rsaDecryptAsync(std::vector<numeric_t> data, RsaKeys<key_t> keys)
-    // {
-    //     std::vector<numeric_t> decrypted_data;
-    
-    //     decrypted_data.resize(data.size());
-    //     std::vector<std::thread> threads;
+    template <typename key_t>
+    key_t generatePrime(void)
+    {
+        key_t number = 0;
 
-    //     for(unsigned int i=0; i < data.size(); ++i)
-    //     {
-    //         std::thread t(addDecryptedKey,std::ref(decrypted_data),data[i],i,keys);
-    //         threads.push_back(std::move(t));
-    //     }
+        number ^= 1UL; // set last bit to 1 so number is odd
+        number ^= 1UL << 4*sizeof(number); // set first bit to one so number is large for its size
 
-    //     for(unsigned int j=0; j < threads.size(); ++j)
-    //         { threads[j].join(); }
+        while(!millerRabinTest(number))
+            { number--; }
 
-    //     threads.clear();
+        return number;
+    }
 
-    //     return decrypted_data;
-    // }
-    
     // XOR encryption funcitons
     std::vector<numeric_t> xorEncrypt(std::vector<numeric_t> data, uint1024_t key);
     uint1024_t GenerateXorKey(void);
