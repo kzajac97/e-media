@@ -39,7 +39,7 @@ void Menu(void)
     std::string filename_save = "Audio/";
     std::ifstream file_open(filename_open.c_str(), std::ifstream::binary);
     std::ofstream file_save(filename_save.c_str(), std::ofstream::binary);
-    Cryptography::RsaKeys<unsigned int> keys(53,59);
+    Cryptography::RsaKeys<uint32_t> keys(104729,81799);
     unsigned int nSamples;
     int data_size;
 

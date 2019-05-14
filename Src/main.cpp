@@ -18,31 +18,31 @@ using namespace boost::multiprecision;
 
 int main(void)
 {
-    //Menu();
+    Menu();
 
-    Cryptography::RsaKeys<uint64_t> keys(383,397);
-    keys.PrintKeys();
-    std::vector<uint16_t> data = {53, 29, 38, 27, 38, 25, 36, 28, 84, 14, 56, 89, 36, 26, 32, 33, 35, 75, 98, 88};
-    //std::vector<uint16_t> data = {32639, 32639, 32639, 32639, 32639};
-    // uint1024_t key = 2363637318288490413;
-    // std::cout << "xor key: " << key << "\n";
-    auto encrypted = Cryptography::rsaEncrypt(data,keys);
-    auto decrypted = Cryptography::rsaDecrypt(encrypted,keys);
+    // Cryptography::RsaKeys<uint64_t> keys(383,397);
+    // keys.PrintKeys();
+    // std::vector<uint16_t> data = {53, 29, 38, 27, 38, 25, 36, 28, 84, 14, 56, 89, 36, 26, 32, 33, 35, 75, 98, 88};
+    // //std::vector<uint16_t> data = {32639, 32639, 32639, 32639, 32639};
+    // // uint1024_t key = 2363637318288490413;
+    // // std::cout << "xor key: " << key << "\n";
+    // auto encrypted = Cryptography::rsaEncrypt(data,keys);
+    // auto decrypted = Cryptography::rsaDecrypt(encrypted,keys);
 
-    std::cout << "DATA: \n";
-    for(auto x : data)
-        { std::cout << x << " "; }
-    std::cout << "\n";
+    // std::cout << "DATA: \n";
+    // for(auto x : data)
+    //     { std::cout << x << " "; }
+    // std::cout << "\n";
 
-    std::cout << "ENCRPYTED: \n";
-    for(auto x : encrypted)
-        { std::cout << x << " "; }
-    std::cout << "\n";
+    // std::cout << "ENCRPYTED: \n";
+    // for(auto x : encrypted)
+    //     { std::cout << x << " "; }
+    // std::cout << "\n";
 
-    std::cout << "DECRYPTED: \n";
-    for(auto x : decrypted)
-        { std::cout << x << " "; }
-    std::cout << "\n";
+    // std::cout << "DECRYPTED: \n";
+    // for(auto x : decrypted)
+    //     { std::cout << x << " "; }
+    // std::cout << "\n";
 
-    return 0;
+    // return 0;
 }
