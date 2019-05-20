@@ -39,7 +39,7 @@ void Menu(void)
     std::string filename_save = "Audio/";
     std::ifstream file_open(filename_open.c_str(), std::ifstream::binary);
     std::ofstream file_save(filename_save.c_str(), std::ofstream::binary);
-    Cryptography::RsaKeys<uint32_t> keys(104729,81799);
+    Cryptography::RsaKeys<uint32_t> keys(61,101);
     unsigned int nSamples;
     int data_size;
 
@@ -179,6 +179,14 @@ void Menu(void)
 
                 vec = Cryptography::rsaEncrypt(vec,keys);
 
+                std::ofstream RSA_p_file("Keys/rsa_p_key.txt");
+                RSA_p_file << keys.p_value;
+                RSA_p_file.close();
+
+                std::ofstream RSA_q_file("Keys/rsa_q_key.txt");
+                RSA_q_file << keys.q_value;
+                RSA_q_file.close();
+
                 WAVData = new data_t[data_size](); // make sure memory is allocated
                 
                 for(int j=0; j < data_size; j++)
@@ -196,11 +204,21 @@ void Menu(void)
                 for(int i=0; i < data_size; i++)
                     { vec[i] = *(WAVData + i); }
 
+                std::ifstream RSA_p_file("Keys/rsa_p_key.txt");
+                RSA_p_file >> keys.p_value;
+                std::cout<<"keys.p_value : "<<keys.p_value<<std::endl;
+                RSA_p_file.close();
+
+                std::ifstream RSA_q_file("Keys/rsa_q_key.txt");
+                RSA_q_file >> keys.q_value;
+                std::cout<<"keys.q_value : "<<keys.q_value<<std::endl;
+                RSA_q_file.close();
+
                 vec = Cryptography::rsaDecrypt(vec,keys);
 
                 WAVData = new data_t[data_size](); // make sure memory is allocated
                 
-                for(int j=0; j < data_size; j++)
+                for(int j=0; j < data_size/2; j++)
                     { *(WAVData + j) = vec[j]; }
 
                 vec.clear(); // clear vector

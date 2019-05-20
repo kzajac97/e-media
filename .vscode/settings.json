@@ -61,6 +61,13 @@
         "stack": "cpp",
         "xthread": "cpp",
         "cinttypes": "cpp",
-        "execution": "cpp"
+        "execution": "cpp",
+        "*.tcc": "cpp",
+        "cctype": "cpp",
+        "clocale": "cpp",
+        "ctime": "cpp",
+        "cwctype": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp"
     }
 }

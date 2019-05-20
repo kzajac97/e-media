@@ -46,6 +46,7 @@ namespace Cryptography
             // swap
             arg_1 = arg_2; 
             arg_2 = denominator; 
+            std::cout<<"a";
         }
     } 
     // finds exponent for public key 
